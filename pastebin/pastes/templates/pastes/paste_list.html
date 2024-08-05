@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load pygmentify_tags %}
+{% block content %}
+
+    <ul>
+        {% for record in pastes %}
+        
+            <li>{{record.title}}</li>
+            {% pygmentify %}
+            <pre class="python">
+                {{record.content}}
+            </pre>
+            {% endpygmentify %}
+            <hr>
+        {% for p in request.user.userprofile.paste_set.all %}
+        {% if record.id == p.id %}
+        <form method="GET" action = "{% url 'paste_edit' record.id %}">
+            {% csrf_token %}
+            <button type = 'submit'>Update paste</button>
+        </form>
+        {% endif %}
+        {%endfor%}
+        {%endfor%}
+    </ul>
+{% endblock content %}
